@@ -1,0 +1,13 @@
+# options_pricing/Dockerfile.lambda
+FROM public.ecr.aws/lambda/python:3.11
+
+# 1) Copy & install only the wheels we know work
+COPY requirements.txt ./
+RUN pip install --upgrade pip \
+ && pip install --no-cache-dir -r requirements.txt
+
+ # 3. Copy code
+COPY app.py models.py monte_carlo.py ./
+
+# 4. Expose port and start
+CMD ["app.handler"]
